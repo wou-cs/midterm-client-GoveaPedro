@@ -24,6 +24,10 @@ def get_programmer_by_id(pid):
     :param pid: Unique identifier for the programmer to lookup
     :return: A dictionary containing the matched programmer. Return an empty dictionary if not found
     """
+    response = requests.get(f"{BASE_URL}/{pid}")
+    if response.status_code == 200:
+        data = response.json()
+        return data.get('programmer', {})
     return {}
 
 
