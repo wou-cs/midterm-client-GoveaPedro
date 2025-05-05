@@ -37,4 +37,12 @@ def get_full_name_from_first(first_name):
     :param first_name:
     :return: A string containing the first and last name of the first programmer in the list of matches.
     """
+    response = requests.get(f'{BASE_URL}/by_first_name/{first_name}')
+    if response.status_code == 200:
+        data = response.json()
+        programmers = data.get('programmers', [])
+        if programmers:
+            first = programmers[0].get("first", "")
+            last = programmers[0].get("last", "")
+            return f"{first} {last}"
     return ""
