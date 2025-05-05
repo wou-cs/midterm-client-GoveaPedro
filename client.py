@@ -10,14 +10,13 @@ def get_programmer_count():
     """
     response = requests.get(BASE_URL)
     if response.status_code == 200:
-        data= response.json()
+        data = response.json()
         return len(data.get('programmers', []))
     return 0
     
 
+ 
     
-
-
 def get_programmer_by_id(pid):
     """
     Return the single programmer referenced by the specified programmer id (pid)
@@ -27,7 +26,8 @@ def get_programmer_by_id(pid):
     response = requests.get(f"{BASE_URL}/{pid}")
     if response.status_code == 200:
         data = response.json()
-        return data.get('programmer', {})
+        if 'first' in data and 'last' in data:
+            return data
     return {}
 
 
@@ -37,12 +37,12 @@ def get_full_name_from_first(first_name):
     :param first_name:
     :return: A string containing the first and last name of the first programmer in the list of matches.
     """
-    response = requests.get(f'{BASE_URL}/by_first_name/{first_name}')
+    response = requests.get(f"{BASE_URL}/by_first_name/{first_name}")
     if response.status_code == 200:
         data = response.json()
-        programmers = data.get('programmers', [])
+        programmers = data.get("programmers", [])
         if programmers:
             first = programmers[0].get("first", "")
             last = programmers[0].get("last", "")
             return f"{first} {last}"
-    return ""
+    return None
